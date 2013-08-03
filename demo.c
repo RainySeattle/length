@@ -101,23 +101,54 @@ int main()
 			}
 
 			if (sign == '+')
-			{
 				result = num1 * convRules[pos1].meter + num2 * convRules[pos2].meter;
-			}
 			if (sign == '-')
-			{
 				result = num1 * convRules[pos1].meter - num2 * convRules[pos2].meter;
+		}
+		/////////////////////////
+		if (lineNum >= 16 && lineNum <=17)
+		{
+			float num1, num2, num3;
+			char meas1[10];
+			char meas2[10];
+			char meas3[10];
+			char sign1;
+			char sign2;
+
+			sscanf(str,"%f %s %c %f %s %c %f %s",&num1, meas1, &sign1, &num2, meas2, &sign2, &num3, meas3);
+			meas1[3] = meas2[3] = meas3[3] = '\0';
+			if (strcmp(meas1, "fee") == 0)
+				strcpy(meas1, "foo");
+			if (strcmp(meas2, "fee") == 0)
+				strcpy(meas2, "foo");
+			if (strcmp(meas3, "fee") == 0)
+				strcpy(meas3, "foo");
+
+			int pos1, pos2, pos3, i;
+			for (i=0; i<6; i++)
+			{
+				if (strcmp(meas1, convRules[i].measurement) == 0)
+					pos1 = i;
+				if (strcmp(meas2, convRules[i].measurement) == 0)
+					pos2 = i;
+				if (strcmp(meas3, convRules[i].measurement) == 0)
+					pos3 = i;
 			}
 
+			if (sign1 == '+' && sign2 == '+')
+				result = num1 * convRules[pos1].meter + num2 * convRules[pos2].meter + num3 *convRules[pos3].meter;
+			if (sign1 == '+' && sign2 == '-')
+				result = num1 * convRules[pos1].meter + num2 * convRules[pos2].meter - num3 *convRules[pos3].meter;
+			if (sign1 == '-' && sign2 == '+')
+				result = num1 * convRules[pos1].meter - num2 * convRules[pos2].meter + num3 *convRules[pos3].meter;
+			if (sign1 == '-' && sign2 == '-')
+				result = num1 * convRules[pos1].meter - num2 * convRules[pos2].meter - num3 *convRules[pos3].meter;
 		}
-
-
-
+		/////////////////////////
 		return result;
-
 	}
 
-	printf("\n\n\n%.2f m\n\n", calc(buf[9].str, buf[9].lineNumber));
+	printf("\n\n\n%.2f m\n\n", calc(buf[15].str, buf[15].lineNumber));
 
 
 	fclose(fp);
