@@ -12,19 +12,24 @@ typedef struct
 	char str[40];
 	int lineNumber;
 }BUF;
-float calc(char *str, int lineNum);
 
 int main()
 {
 	FILE *fp;
+	FILE *fpw;
 	CONVRULE convRules[6];
 	BUF buf[17];
 
 	int i = 0;
 
-	if((fp = fopen("input.txt", "r")) == NULL)
+	if ((fp = fopen("input.txt", "r")) == NULL)
 	{
 		printf("could not open file");
+		return 0;
+	}
+	if ((fpw = fopen("output.txt", "w")) == NULL)
+	{
+		printf("could not write to file");
 		return 0;
 	}
 
@@ -34,8 +39,6 @@ int main()
 		fgets(buf[i].str, 128, fp);
 		i++;
 		buf[i-1].lineNumber = i;
-		printf("%d\t", buf[i-1].lineNumber);
-		puts(buf[i-1].str);
 	}
 
 	///解析转换规则
@@ -44,12 +47,7 @@ int main()
 	{
 		sscanf(buf[j].str, "%*f %s %*c %f %*c", convRules[j].measurement, &convRules[j].meter);
 		convRules[j].measurement[3] = '\0';  //截取单位前三个字符，规避英文单词复数问题
-
-		puts(convRules[j].measurement);
-		//puts(tmp);
-		printf("\t%f\n",convRules[j].meter);
 	}
-
 
 	float calc(char *str, int lineNum)
 	{
@@ -148,13 +146,20 @@ int main()
 		return result;
 	}
 
-	printf("\n\n\n%.2f m\n\n", calc(buf[15].str, buf[15].lineNumber));
+	fprintf(fpw, "%s", "leocuit@foxmail.com");
+	fprintf(fpw, "%c%c", '\n', '\n');
+
+	for (i=7; i<17; i++)
+	{
+		fprintf(fpw, "%.2f m%c", calc(buf[i].str, buf[i].lineNumber), '\n');
+	}
+
+	printf("calculate completed, file write succeeded!");
 
 
 	fclose(fp);
+	fclose(fpw);
 	return 0;
-
-
 }
 
 
