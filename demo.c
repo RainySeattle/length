@@ -51,9 +51,6 @@ int main()
 	}
 
 
-
-
-
 	float calc(char *str, int lineNum)
 	{
 		float result;
@@ -68,7 +65,7 @@ int main()
 
 			sscanf(str, "%[^ ]", &sNum);
 			sscanf(str, "%*s %s", &meas);
-			meas[3] = '\0';  //截取单位前三个字符，英文单词规避复数问题
+			meas[3] = '\0';  //截取单位前三个字符，规避英文单词复数问题
 			if (strcmp(meas, "fee") == 0)
 			{
 				strcpy(meas, "foo");
@@ -83,13 +80,39 @@ int main()
 				}
 
 			}
-
-			//printf("\n\n%f", num); //test
-			//puts(meas); //test
 		}
 		//////////////////////
 		if (lineNum >= 14 && lineNum <=15)
 		{
+			float num1, num2;
+			char meas1[10];
+			char meas2[10];
+			char sign;
+
+			sscanf(str,"%f %s %c %f %s",&num1, meas1, &sign, &num2, meas2 );
+			meas1[3] = meas2[3] = '\0';
+			if (strcmp(meas1, "fee") == 0)
+				strcpy(meas1, "foo");
+			if (strcmp(meas2, "fee") == 0)
+				strcpy(meas2, "foo");
+
+			int pos1, pos2, i;
+			for (i=0; i<6; i++)
+			{
+				if (strcmp(meas1, convRules[i].measurement) == 0)
+					pos1 = i;
+				if (strcmp(meas2, convRules[i].measurement) == 0)
+					pos2 = i;
+			}
+
+			if (sign == '+')
+			{
+				result = num1 * convRules[pos1].meter + num2 * convRules[pos2].meter;
+			}
+			if (sign == '-')
+			{
+				result = num1 * convRules[pos1].meter - num2 * convRules[pos2].meter;
+			}
 
 		}
 
@@ -99,7 +122,7 @@ int main()
 
 	}
 
-	printf("\n\n\n%.2f m\n\n", calc(buf[12].str, buf[12].lineNumber));
+	printf("\n\n\n%.2f m\n\n", calc(buf[13].str, buf[13].lineNumber));
 
 
 	fclose(fp);
