@@ -40,13 +40,10 @@ int main()
 
 	///解析转换规则
 	int j;
-	char tmp[10];
 	for(j=0; j<6; j++)
 	{
-		sscanf(buf[j].str, "%*s %[^=]", &convRules[j].measurement);
-		convRules[j].measurement[3] = '\0';  //截取单位前三个字符，英文单词规避复数问题
-		sscanf(buf[j].str, "%*[^=]=%[^m]", &tmp);
-		convRules[j].meter = atof(tmp);
+		sscanf(buf[j].str, "%*f %s %*c %f %*c", convRules[j].measurement, &convRules[j].meter);
+		convRules[j].measurement[3] = '\0';  //截取单位前三个字符，规避英文单词复数问题
 
 		puts(convRules[j].measurement);
 		//puts(tmp);
@@ -60,15 +57,22 @@ int main()
 	float calc(char *str, int lineNum)
 	{
 		float result;
-		int i;
+
+		//////////////////////
 		if (lineNum >=8 && lineNum <= 13)
 		{
 			float num;
 			char sNum[10];
 			char meas[10];
+			int i;
+
 			sscanf(str, "%[^ ]", &sNum);
 			sscanf(str, "%*s %s", &meas);
 			meas[3] = '\0';  //截取单位前三个字符，英文单词规避复数问题
+			if (strcmp(meas, "fee") == 0)
+			{
+				strcpy(meas, "foo");
+			}                              //对feet特殊处理。。。
 			num = atof(sNum);
 			for (i=0; i<6; i++)
 			{
@@ -83,13 +87,19 @@ int main()
 			//printf("\n\n%f", num); //test
 			//puts(meas); //test
 		}
+		//////////////////////
+		if (lineNum >= 14 && lineNum <=15)
+		{
+
+		}
+
 
 
 		return result;
 
 	}
 
-	printf("\n\n\n%.2f m\n\n", calc(buf[7].str, buf[7].lineNumber));
+	printf("\n\n\n%.2f m\n\n", calc(buf[12].str, buf[12].lineNumber));
 
 
 	fclose(fp);
