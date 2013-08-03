@@ -59,26 +59,21 @@ int main()
 		if (lineNum >=8 && lineNum <= 13)
 		{
 			float num;
-			char sNum[10];
 			char meas[10];
 			int i;
 
-			sscanf(str, "%[^ ]", &sNum);
-			sscanf(str, "%*s %s", &meas);
+			sscanf(str,"%f %s", &num, meas);
 			meas[3] = '\0';  //截取单位前三个字符，规避英文单词复数问题
+
 			if (strcmp(meas, "fee") == 0)
 			{
 				strcpy(meas, "foo");
 			}                              //对feet特殊处理。。。
-			num = atof(sNum);
+
 			for (i=0; i<6; i++)
 			{
 				if (strcmp(convRules[i].measurement, meas) == 0)
-				{
-					puts(convRules[i].measurement); //test
 					result = num * convRules[i].meter;
-				}
-
 			}
 		}
 		//////////////////////
@@ -122,7 +117,7 @@ int main()
 
 	}
 
-	printf("\n\n\n%.2f m\n\n", calc(buf[13].str, buf[13].lineNumber));
+	printf("\n\n\n%.2f m\n\n", calc(buf[9].str, buf[9].lineNumber));
 
 
 	fclose(fp);
