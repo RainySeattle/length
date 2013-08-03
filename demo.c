@@ -52,7 +52,6 @@ int main()
 	float calc(char *str, int lineNum)
 	{
 		float result;
-
 		//////////////////////
 		if (lineNum >=8 && lineNum <= 13)
 		{
@@ -64,9 +63,7 @@ int main()
 			meas[3] = '\0';  //截取单位前三个字符，规避英文单词复数问题
 
 			if (strcmp(meas, "fee") == 0)
-			{
-				strcpy(meas, "foo");
-			}                              //对feet特殊处理。。。
+				strcpy(meas, "foo");      //对feet特殊处理。。。
 
 			for (i=0; i<6; i++)
 			{
@@ -155,7 +152,6 @@ int main()
 	}
 
 	printf("calculate completed, file write succeeded!");
-
 
 	fclose(fp);
 	fclose(fpw);
